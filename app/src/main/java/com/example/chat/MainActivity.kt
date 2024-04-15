@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity() {
             val activities:List<ResolveInfo> = packageManager.queryIntentActivities(intent,0)
             if (activities.isNotEmpty()){
                 startActivityForResult(intent,SPEECH_REQUEST_CODE)
+
+
             }
 
         }
