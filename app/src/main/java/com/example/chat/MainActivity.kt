@@ -35,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         binding.sayingBtn.setOnClickListener {
             startVoiceInput()
         }
+
+        binding.progressBar.isActivated = false
+
+//        binding.chatRecyclerView
     }
 
     private fun startVoiceInput() {
@@ -61,6 +65,8 @@ class MainActivity : AppCompatActivity() {
             // 在这里处理语音输入结果，例如将其显示在界面上
             // 这里只是一个示例，具体实现可以根据需求进行修改
             Toast.makeText(this, "You said: $spokenText", Toast.LENGTH_SHORT).show()
+             val manager = binding.chatRecyclerView.layoutManager
+
         }
     }
 

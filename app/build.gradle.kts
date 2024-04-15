@@ -56,4 +56,8 @@ dependencies {
     //Rounded ImageView
     implementation(libs.roundedimageview)
     implementation (libs.lottie)
+
+    //Retrofit 网络请求
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 }
