@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">chat</string>
+
+    <string name="fun_chat_audio_record_send_tips">松开 发送</string>
+    <string name="fun_chat_audio_record_cancel_tips">松开 取消</string>
+    <string name="fun_chat_audio_record_max_time_tips">%d \" 后将停止录音</string>
+    <string name="fun_chat_input_hint_tips">请输入您想说的…</string>
+    <string name="saying">按住说话</string>
+</resources>
