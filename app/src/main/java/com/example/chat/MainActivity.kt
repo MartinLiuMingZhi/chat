@@ -1,14 +1,18 @@
 package com.example.chat
 
+import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.chat.databinding.ActivityMainBinding
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.sayingBtn.setOnClickListener {
+            checkAndRequestPermission()
             startVoiceInput()
         }
 
@@ -40,6 +45,17 @@ class MainActivity : AppCompatActivity() {
 
 //        binding.chatRecyclerView
     }
+
+    private fun checkAndRequestPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+            != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, request the permission
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                RECORD_AUDIO_PERMISSION_CODE)
+        }
+    }
+
 
     private fun startVoiceInput() {
         // 在这里启动语音输入界面
@@ -70,7 +86,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            RECORD_AUDIO_PERMISSION_CODE -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // Permission granted, perform the required operation
+                    startVoiceInput()
+                } else {
+                    // Permission denied, handle the scenario accordingly
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+            // Add more cases if you have multiple permissions to handle
+        }
+    }
+
     companion object {
         private const val REQUEST_CODE_SPEECH_INPUT = 100
+        private const val RECORD_AUDIO_PERMISSION_CODE = 101
     }
 }
