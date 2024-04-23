@@ -14,6 +14,9 @@ retrofit = "2.9.0"
 roundedimageview = "2.3.0"
 sdpAndroid = "1.0.6"
 sspAndroid = "1.0.6"
+jacksonDatabind = "2.17.0"
+jacksonModuleKotlin = "2.17.0"
+gson = "2.10.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -30,6 +33,9 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 roundedimageview = { module = "com.makeramen:roundedimageview", version.ref = "roundedimageview" }
 sdp-android = { module = "com.intuit.sdp:sdp-android", version.ref = "sdpAndroid" }
 ssp-android = { module = "com.intuit.ssp:ssp-android", version.ref = "sspAndroid" }
+jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jacksonDatabind" }
+jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jacksonModuleKotlin" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
