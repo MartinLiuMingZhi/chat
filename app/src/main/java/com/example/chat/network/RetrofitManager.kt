@@ -6,12 +6,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitManager {
 
-    private const val BASE_URL = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/"
+    private const val BASE_URL = "https://aip.baidubce.com/rpc/2.0/ai_custom"
 
-    const val API_KEY = "XUh65QnZ6suKc5l2nHc5ebQG"
-    const val SECRET_KEY = "IGZOvuSJD1YrWMOOSrOT3Fq3LytDQNkK"
-    const val access_token = ""
-    const val APPID = "58308844"
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)

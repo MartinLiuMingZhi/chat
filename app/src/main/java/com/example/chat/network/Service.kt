@@ -1,11 +1,14 @@
 package com.example.chat.network
 
-import retrofit2.Retrofit
+import com.example.chat.data.ChatRequest
+import com.example.chat.data.ChatResponse
+import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface Service {
 
-//    @POST("chat/completions_pro")
-//
+    @POST("/v1/wenxinworkshop/chat/completions_pro")
+    fun chat(@Body chatRequest: ChatRequest):Call<ChatResponse>
 
 }

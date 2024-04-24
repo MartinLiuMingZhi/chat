@@ -7,5 +7,13 @@ data class TokenRequest(
 )
 
 data class TokenResponse(
-    val access_token:String,
+    val access_token:String
+)
+
+data class ChatRequest(
+    val access_token:String
+)
+
+data class ChatResponse(
+    val msg:String
 )

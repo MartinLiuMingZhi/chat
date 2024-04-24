@@ -17,6 +17,7 @@ object NetWork {
     private val token = TokenRetrofit.create<TokenService>()
     suspend fun getToken(tokenRequest: TokenRequest) = token.getToken(tokenRequest).await()
 
+
     //给网络请求方法的返回值增加拓展函数
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->
