@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ImgSelectorActivity">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/constraintLayout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#38393d"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img"
+        app:layout_constraintVertical_bias="1">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/back"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/importImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:orientation="vertical"
+            android:src="@drawable/ic_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/linearTakePhoto"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toEndOf="@+id/back"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_image" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:text="@string/importImg"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearTakePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/takePhoto"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:background="@color/colorPrimaryLight"
+                android:src="@drawable/ic_baseline_photo_camera_24"
+                app:contentPadding="10dp"
+                android:layout_gravity="center"
+                app:shapeAppearance="@style/circleImageStyle" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/openCamara"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/send"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

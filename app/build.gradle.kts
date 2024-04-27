@@ -66,5 +66,15 @@ dependencies {
     implementation(libs.converter.gson)
 
 
-
+    // PictureSelector 基础 (必须)
+    implementation (libs.pictureselector)
+    // 图片压缩 (按需引入)
+    implementation (libs.compress)
+    // 图片裁剪 (按需引入
+    implementation (libs.ucrop)
+    // 自定义相机 (按需引入)
+    implementation (libs.camerax)
+    // 文件操作 FileOperator
+    implementation (libs.file.core)
+    implementation (libs.glide)
 }

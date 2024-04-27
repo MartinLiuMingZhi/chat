@@ -12,4 +12,5 @@
 
     <color name="fun_chat_input_audio_record_tips_color">#aaaaaa</color>
     <color name="color_333333">#333333</color>
+    <color name="colorPrimaryLight">#ecf2fe</color>
 </resources>

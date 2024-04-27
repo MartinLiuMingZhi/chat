@@ -6,4 +6,8 @@
     <string name="fun_chat_audio_record_max_time_tips">%d \" 后将停止录音</string>
     <string name="fun_chat_input_hint_tips">请输入您想说的…</string>
     <string name="saying">按住说话</string>
+    <string name="back">返回</string>
+    <string name="importImg">相册导入</string>
+    <string name="openCamara">打开相机</string>
+    <string name="send">发送</string>
 </resources>
