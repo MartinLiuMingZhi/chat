@@ -5,9 +5,13 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
+import android.util.Base64
 import android.util.Log
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -20,6 +24,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chat.adapter.MsgAdapter
 import com.example.chat.data.ChatRequest
+import com.example.chat.data.ImgRequest
 import com.example.chat.data.Message
 import com.example.chat.data.Msg
 import com.example.chat.databinding.ActivityMainBinding
@@ -28,11 +33,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Response
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
 import java.util.Locale
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
+    private  val REQUEST_IMAGE = 1
     // 声明 TextToSpeech 对象
     private lateinit var textToSpeech: TextToSpeech
 
@@ -72,11 +83,19 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             startVoiceInput()
         }
 
+        binding.imgBtn.setOnClickListener {
+            val intent = Intent(this,ImgSelectorActivity::class.java)
+            startActivityForResult(intent,REQUEST_IMAGE)
+
+
+        }
 
 
     }
 
-//    private fun initMsg() {
+
+
+    //    private fun initMsg() {
 //        val msg1 = Msg("hello guy.", Msg.TYPE_RECEIVED)
 //        msgList.add(msg1)
 //        val msg2 = Msg("hello.who is that?", Msg.TYPE_SENT)
@@ -92,6 +111,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 arrayOf(Manifest.permission.RECORD_AUDIO),
                 RECORD_AUDIO_PERMISSION_CODE)
         }
+
     }
 
 
@@ -128,6 +148,53 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
         }
+
+        if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
+            val imageUri = data?.getParcelableExtra<Uri>("image_path") // 从 Intent 中获取图像的 Uri
+            Log.d("image_path", imageUri.toString())
+
+            // 将 URI 转换为 Base64 编码的字符串
+            val imageBase64 = decodeUri(imageUri)
+            if (imageBase64.isNotEmpty() && imageBase64 != "error") {
+                // 将 Base64 编码的字符串解码为字节数组
+                val imageData: ByteArray = Base64.decode(imageBase64, Base64.DEFAULT)
+                // 压缩图像
+                val compressedBitmap = BitmapFactory.decodeByteArray(
+                    imageData, 0, imageData.size
+                )
+                val compressedImage = compressBitmap(compressedBitmap)
+
+                // 继续进行其他处理，例如将压缩后的图像发送到服务器
+                // 你的处理逻辑...
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        Log.d("TAG",compressedImage.toString())
+                        val response = NetWork.imageToText(access_token,
+                            ImgRequest(compressedImage.toString(),"introduce this picture")
+                        )
+                        Log.d("TAG",response.toString())
+                        if (response.result != null) {
+                            val msg = Msg(response.result, Msg.TYPE_RECEIVED)
+                            msgList.add(msg)
+                            adapter?.notifyItemInserted(msgList.size - 1)
+                            binding.chatRecyclerView.scrollToPosition(msgList.size - 1)
+                            speakOut(response.result)
+                        } else {
+                            Log.e("TAG", "Response result is null")
+                            // 处理结果为空的情况，例如向用户显示错误消息
+                        }
+                    }catch (e: Exception) {
+                        Log.e("TAG", "Exception: ${e.message}", e)
+                    }
+                }
+            } else {
+                // 如果处理失败，显示错误消息
+                Toast.makeText(this, "Failed to process image", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
     }
 
     private fun sendMsg(spokenText: String) {
@@ -218,5 +285,53 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             textToSpeech.shutdown()
         }
         super.onDestroy()
+    }
+
+
+    private fun decodeUri(uri: Uri?): String {
+        try {
+            // 通过 URI 获取图像的输入流
+            val inputStream = contentResolver.openInputStream(uri!!)
+            // 将输入流读取为字节数组
+            val bytes = inputStream?.readBytes()
+            // 将字节数组转换为 Base64 编码的字符串
+            return if (bytes != null) {
+                Base64.encodeToString(bytes, Base64.DEFAULT)
+            } else {
+                "error"
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return "error"
+        }
+    }
+
+
+
+
+    // 压缩图片以确保大小在要求范围内
+    private fun compressBitmap(bitmap: Bitmap): Bitmap {
+        val maxSize = 4 * 1024 * 1024 // 4MB
+        val minWidth = 15
+        val maxWidth = 4096
+
+        // 计算图片的宽度和高度
+        val width = bitmap.width
+        val height = bitmap.height
+
+        // 如果图片大小在要求范围内，则返回原始图片
+        if (bitmap.byteCount <= maxSize && width >= minWidth && height >= minWidth && width <= maxWidth && height <= maxWidth) {
+            return bitmap
+        }
+
+        // 计算压缩比例
+        val ratio = Math.sqrt(bitmap.byteCount.toDouble() / maxSize.toDouble())
+
+        // 新的宽度和高度
+        val newWidth = (width / ratio).toInt()
+        val newHeight = (height / ratio).toInt()
+
+        // 返回压缩后的图片
+        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
     }
 }

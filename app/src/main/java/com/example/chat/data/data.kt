@@ -26,3 +26,25 @@ data class ChatResponse(
     val created:Int,
     val result:String
 )
+
+data class ImgRequest(
+    val image:String,
+    val prompt:String,
+   // val output_CHN:Boolean
+)
+
+
+data class ImgResponse(
+    val id:String,
+    val `object`: String,
+    val created:Int,
+    val result: String,
+    val is_safe:Boolean,
+    val usage:Usage
+)
+
+data class Usage(
+    val prompt_tokens:Int,
+    val completion_tokens:Int,
+    val total_tokens:Int
+)

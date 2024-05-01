@@ -9,7 +9,7 @@
     <color name="error">#B00020</color>
     <color name="received_message_background">#090D16</color>
     <color name="primary_text">#142232</color>
-
+    <color name="colorPrimary">#2196F3</color>
     <color name="fun_chat_input_audio_record_tips_color">#aaaaaa</color>
     <color name="color_333333">#333333</color>
     <color name="colorPrimaryLight">#ecf2fe</color>

@@ -3,6 +3,7 @@ package com.example.chat.network
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.chat.data.ChatRequest
+import com.example.chat.data.ImgRequest
 import com.example.chat.data.Msg
 import com.example.chat.data.TokenRequest
 import retrofit2.Call
@@ -19,7 +20,7 @@ object NetWork {
     private val token = TokenRetrofit.create<TokenService>()
     suspend fun getToken(tokenRequest: TokenRequest) = token.getToken(tokenRequest).await()
     suspend fun chat(accessToken: String,chatRequest: ChatRequest) = service.chat(accessToken,chatRequest).await()
-
+    suspend fun imageToText(accessToken: String,imgRequest: ImgRequest) = service.imgToText(accessToken, imgRequest).await()
     //给网络请求方法的返回值增加拓展函数
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->
