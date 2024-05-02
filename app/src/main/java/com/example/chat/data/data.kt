@@ -39,7 +39,7 @@ data class ImgResponse(
     val `object`: String,
     val created:Int,
     val result: String,
-    val is_safe:Boolean,
+    val is_safe:Int,
     val usage:Usage
 )
 

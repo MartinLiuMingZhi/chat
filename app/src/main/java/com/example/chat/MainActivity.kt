@@ -154,25 +154,16 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             Log.d("image_path", imageUri.toString())
 
             // 将 URI 转换为 Base64 编码的字符串
-            val imageBase64 = decodeUri(imageUri)
+            val imageBase64 = encodeImageToBase64(imageUri)
+            Log.d("Base64编码",imageBase64)
             if (imageBase64.isNotEmpty() && imageBase64 != "error") {
-                // 将 Base64 编码的字符串解码为字节数组
-                val imageData: ByteArray = Base64.decode(imageBase64, Base64.DEFAULT)
-                // 压缩图像
-                val compressedBitmap = BitmapFactory.decodeByteArray(
-                    imageData, 0, imageData.size
-                )
-                val compressedImage = compressBitmap(compressedBitmap)
-
-                // 继续进行其他处理，例如将压缩后的图像发送到服务器
-                // 你的处理逻辑...
+                // 继续进行其他处理，例如将图像发送到服务器
                 CoroutineScope(Dispatchers.Main).launch {
                     try {
-                        Log.d("TAG",compressedImage.toString())
                         val response = NetWork.imageToText(access_token,
-                            ImgRequest(compressedImage.toString(),"introduce this picture")
+                            ImgRequest(imageBase64, "introduce this picture")
                         )
-                        Log.d("TAG",response.toString())
+                        Log.d("response", response.toString())
                         if (response.result != null) {
                             val msg = Msg(response.result, Msg.TYPE_RECEIVED)
                             msgList.add(msg)
@@ -183,7 +174,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                             Log.e("TAG", "Response result is null")
                             // 处理结果为空的情况，例如向用户显示错误消息
                         }
-                    }catch (e: Exception) {
+                    } catch (e: Exception) {
                         Log.e("TAG", "Exception: ${e.message}", e)
                     }
                 }
@@ -288,23 +279,25 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
 
-    private fun decodeUri(uri: Uri?): String {
+    private fun encodeImageToBase64(uri: Uri?): String {
         try {
             // 通过 URI 获取图像的输入流
             val inputStream = contentResolver.openInputStream(uri!!)
-            // 将输入流读取为字节数组
-            val bytes = inputStream?.readBytes()
-            // 将字节数组转换为 Base64 编码的字符串
-            return if (bytes != null) {
-                Base64.encodeToString(bytes, Base64.DEFAULT)
-            } else {
-                "error"
-            }
+            // 将输入流解码为 Bitmap
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            // 压缩图像
+            val compressedBitmap = compressBitmap(bitmap)
+            // 将压缩后的图像转换为 Base64 编码的字符串
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            compressedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            val byteArray = byteArrayOutputStream.toByteArray()
+            return Base64.encodeToString(byteArray, Base64.DEFAULT)
         } catch (e: Exception) {
             e.printStackTrace()
             return "error"
         }
     }
+
 
 
 
