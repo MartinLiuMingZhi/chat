@@ -6,6 +6,7 @@ import com.example.chat.data.ChatRequest
 import com.example.chat.data.ImgRequest
 import com.example.chat.data.Msg
 import com.example.chat.data.TokenRequest
+import com.example.chat.data.TransRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,6 +22,8 @@ object NetWork {
     suspend fun getToken(tokenRequest: TokenRequest) = token.getToken(tokenRequest).await()
     suspend fun chat(accessToken: String,chatRequest: ChatRequest) = service.chat(accessToken,chatRequest).await()
     suspend fun imageToText(accessToken: String,imgRequest: ImgRequest) = service.imgToText(accessToken, imgRequest).await()
+
+    suspend fun translate(accessToken: String,transRequest: TransRequest) = service.translate(accessToken, transRequest).await()
     //给网络请求方法的返回值增加拓展函数
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->

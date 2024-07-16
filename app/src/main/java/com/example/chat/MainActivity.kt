@@ -27,6 +27,7 @@ import com.example.chat.data.ChatRequest
 import com.example.chat.data.ImgRequest
 import com.example.chat.data.Message
 import com.example.chat.data.Msg
+import com.example.chat.data.TransRequest
 import com.example.chat.databinding.ActivityMainBinding
 import com.example.chat.network.NetWork
 import kotlinx.coroutines.CoroutineScope
@@ -51,7 +52,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var loadingProgressBar: ProgressBar
     private val msgList = ArrayList<Msg>()
     private var adapter: MsgAdapter? = null
-    private val access_token = "24.69224740f53277f7a0cf0aa68f86adf9.2592000.1716207595.282335-58308844"
+    private val access_token = "24.6563a392e92b601d33cb37fa3c59610c.2592000.1723447743.282335-58308844"
+    private val trans_token = "24.136bfecf38b854b47d5a77ba3e0051b3.2592000.1723733729.282335-65838920"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -165,11 +167,18 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                         )
                         Log.d("response", response.toString())
                         if (response.result != null) {
-                            val msg = Msg(response.result, Msg.TYPE_RECEIVED)
-                            msgList.add(msg)
-                            adapter?.notifyItemInserted(msgList.size - 1)
-                            binding.chatRecyclerView.scrollToPosition(msgList.size - 1)
-                            speakOut(response.result)
+                            val trans_response = NetWork.translate(trans_token, TransRequest("en","zh",response.result))
+                            Log.d("trans_response",trans_response.toString())
+                            if (trans_response.result !=null){
+                                val msg = Msg(trans_response.result.trans_result[0].dst, Msg.TYPE_RECEIVED)
+                                msgList.add(msg)
+                                adapter?.notifyItemInserted(msgList.size - 1)
+                                binding.chatRecyclerView.scrollToPosition(msgList.size - 1)
+                                speakOut(trans_response.result.trans_result[0].dst)
+                            }
+                            else{
+                                Log.e("TAG","translate result fail")
+                            }
                         } else {
                             Log.e("TAG", "Response result is null")
                             // 处理结果为空的情况，例如向用户显示错误消息

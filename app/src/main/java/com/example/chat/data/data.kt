@@ -48,3 +48,23 @@ data class Usage(
     val completion_tokens:Int,
     val total_tokens:Int
 )
+
+data class TransRequest(
+    val from:String,
+    val to:String,
+    val q:String
+)
+
+data class TransResponse(
+    val result:Result,
+    val log_id:String,
+)
+data class Result(
+    val from: String,
+    val trans_result:List<Translation>,
+    val to:String
+)
+data class Translation(
+    val dst: String,
+    val src:String
+)

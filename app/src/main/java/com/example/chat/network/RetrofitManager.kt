@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitManager {
 
-    private const val BASE_URL = "https://aip.baidubce.com/rpc/2.0/ai_custom/"
+    private const val BASE_URL = "https://aip.baidubce.com/rpc/2.0/"
 
 
     private val retrofit = Retrofit.Builder()
