@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.chat.R
 import com.example.chat.data.Msg
 
@@ -44,7 +45,7 @@ class MsgAdapter(val msgList: List<Msg>) : RecyclerView.Adapter<RecyclerView.Vie
             is RightViewHolder -> holder.rightMsg.text = msg.content
             is ImageViewHolder -> {
                 // 如果Msg对象包含了图片资源ID，则设置ImageView的资源
-                msg.imageResId?.let { holder.image.setImageResource(it) }
+                Glide.with(holder.itemView.context).load(msg.content).into(holder.image)
             }
             else -> throw IllegalArgumentException()
         }

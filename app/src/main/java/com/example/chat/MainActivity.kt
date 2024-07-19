@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             Log.d("Base64编码",imageBase64)
             if (imageBase64.isNotEmpty() && imageBase64 != "error") {
                 // 创建包含图片信息的 Msg 对象
-                val msg = Msg("", Msg.TYPE_IMAGE)
+                val msg = Msg(imageUri.toString(), Msg.TYPE_IMAGE)
                 msgList.add(msg)
                 adapter?.notifyItemInserted(msgList.size - 1)
                 binding.chatRecyclerView.scrollToPosition(msgList.size - 1)
