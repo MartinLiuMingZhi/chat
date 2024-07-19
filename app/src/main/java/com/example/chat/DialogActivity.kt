@@ -1,7 +1,6 @@
 package com.example.chat
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,9 +9,6 @@ import com.example.chat.data.Msg
 import com.example.chat.databinding.ActivityDialogBinding
 import okhttp3.*
 import java.io.IOException
-import com.google.gson.Gson
-
-
 
 
 class DialogActivity : AppCompatActivity() , View.OnClickListener {

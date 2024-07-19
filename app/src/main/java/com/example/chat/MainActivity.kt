@@ -35,11 +35,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.UnsupportedEncodingException
-import java.net.URLEncoder
 import java.util.Locale
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
@@ -159,6 +154,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             val imageBase64 = encodeImageToBase64(imageUri)
             Log.d("Base64编码",imageBase64)
             if (imageBase64.isNotEmpty() && imageBase64 != "error") {
+                // 创建包含图片信息的 Msg 对象
+                val msg = Msg("", Msg.TYPE_IMAGE)
+                msgList.add(msg)
+                adapter?.notifyItemInserted(msgList.size - 1)
+                binding.chatRecyclerView.scrollToPosition(msgList.size - 1)
                 // 继续进行其他处理，例如将图像发送到服务器
                 CoroutineScope(Dispatchers.Main).launch {
                     try {
